@@ -28,24 +28,3 @@ jobs:
         uses: hashicorp/setup-terraform@v3  # Latest version as of now
         with:
           terraform_version: 1.9.5  # Latest version as of now
-
-      - name: Terraform Init with Migration Check
-        run: |
-          if terraform init -migrate-state; then
-            echo "State migration successful."
-          else
-            echo "State migration failed. Running without migration."
-            terraform init
-          fi
-      
-      - name: Terrafrom Validate    
-        run: terraform validate
-        
-      - name: Terraform Plan
-        run: terraform plan
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
-        
-#      - name: Terraform Destroy
-#        run: terraform destroy -auto-approve
