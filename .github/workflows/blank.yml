@@ -13,7 +13,7 @@ jobs:
       # Download the .tgz file from JFrog Artifactory
       - name: Download Artifact from JFrog
         run: |
-          wget --user=admin --password='7rA@#jan06sk' https://knra.jfrog.io/artifactory/knnpm-npm-local/path/to/artifacts/build_20241015111239.tgz
+          wget --user=${{ secrets.JF_USER }} --password=${{ secrets.JF_PASSWORD }} https://knra.jfrog.io/artifactory/knnpm-npm-local/path/to/artifacts/build_20241015111239.tgz
         
       # Extract the downloaded .tgz file
       - name: Extract Artifact
