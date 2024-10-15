@@ -1,21 +1,21 @@
-name: "JFrog Artifact Pull Example"
+name: "Download and Extract Artifact"
 on: push
 
 jobs:
-  pull-artifact:
+  download:
     runs-on: ubuntu-latest
     
     steps:
+      # Checkout the repository (if needed)
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Download Artifact from JFrog using curl
-        env:
-          JF_URL: ${{ secrets.JF_URL }}
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+        
+      # Download the .tgz file from JFrog Artifactory
+      - name: Download Artifact from JFrog
         run: |
-          # Use curl to download the artifact
-          curl -H "Authorization: Bearer $JF_ACCESS_TOKEN" -O "$JF_URL/artifactory/knnpm-npm-local/path/to/artifacts/build_20241015102507.zip"
-
-      - name: Unzip the downloaded artifact
-        run: unzip build_20241015102507.zip
+          wget --user=${{ secrets.JF_USER }} --password=${{ secrets.JF_PASSWORD }} https://knra.jfrog.io/artifactory/knnpm-npm-local/path/to/artifacts/build_20241015111239.tgz
+        
+      # Extract the downloaded .tgz file
+      - name: Extract Artifact
+        run: |
+          tar -xvzf build_20241015111239.tgz
