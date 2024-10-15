@@ -18,8 +18,8 @@ jobs:
        # Step to download the artifact from the specified JFrog URL
        - name: Download Artifact from JFrog
          run: |
-           # Download artifact from JFrog Artifactory
-           jf rt dl "knnpm-npm-local/path/to/artifacts/build_20241015102507.zip" .
+           # Download artifact from JFrog Artifactory with explicit URL
+           jf rt dl "knnpm-npm-local/path/to/artifacts/build_20241015102507.zip" . --url=${{ secrets.JF_URL }} --access-token=${{ secrets.JF_ACCESS_TOKEN }}
            
        - name: Unzip the downloaded artifact
          run: unzip build_20241015102507.zip
