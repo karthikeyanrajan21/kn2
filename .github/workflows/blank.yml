@@ -1,23 +1,25 @@
-name: "JFrog NPM Integration Example"
-on: 
-  push:
-
-permissions:
-  id-token: write
-  contents: read
+name: "JFrog Integration Example"
+on: push
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  pull-artifact:
+     runs-on: ubuntu-latest
+       
+     steps:
+       - name: Checkout
+         uses: actions/checkout@v3
+         
+       - name: Setup JFrog CLI
+         uses: jfrog/setup-jfrog-cli@v3
+         env:  
+           JF_URL: ${{ secrets.JF_URL }}
+           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v4
-        env:
-          JF_URL: https://knra.jfrog.io 
-        with:
-          oidc-provider-name: github-jfrog 
-          oidc-audience: my-aud
+       # Step to download the artifact from the specified JFrog URL
+       - name: Download Artifact from JFrog
+         run: |
+           # Download artifact from JFrog Artifactory
+           jf rt dl "knnpm-npm-local/path/to/artifacts/build_20241015102507.zip" .
+           
+       - name: Unzip the downloaded artifact
+         run: unzip build_20241015102507.zip
