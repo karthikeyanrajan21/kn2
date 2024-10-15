@@ -1,4 +1,4 @@
-name: "JFrog Integration Example"
+name: "JFrog Artifact Pull Example"
 on: push
 
 jobs:
@@ -15,11 +15,17 @@ jobs:
            JF_URL: ${{ secrets.JF_URL }}
            JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
+       # Step to configure JFrog CLI with the Artifactory URL and token
+       - name: Configure JFrog CLI
+         run: |
+           jf config add my-artifactory-server \
+           --url=${{ secrets.JF_URL }} \
+           --access-token=${{ secrets.JF_ACCESS_TOKEN }} \
+           --interactive=false
+
        # Step to download the artifact from the specified JFrog URL
        - name: Download Artifact from JFrog
-         run: |
-           # Download artifact from JFrog Artifactory with explicit URL
-           jf rt dl "knnpm-npm-local/path/to/artifacts/build_20241015102507.zip" . --url=${{ secrets.JF_URL }} --access-token=${{ secrets.JF_ACCESS_TOKEN }}
-           
+         run: jf rt dl "knnpm-npm-local/path/to/artifacts/build_20241015102507.zip" .
+
        - name: Unzip the downloaded artifact
          run: unzip build_20241015102507.zip
